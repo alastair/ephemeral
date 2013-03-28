@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+	{% if alreadywanted %}
+    You've already asked for this song!<br>
+		<a href="/">Go back</a>
+	{% else %}
+You are asking {{who}} to share {{title}} to you. Type them a message below. We'll add a hashtag and url.
+<form method="post">
+	<textarea cols="100" rows="4" name="tweet">{{tweet}}</textarea><br>
+	<input type="hidden" name="wanted_from_id" value="{{wanted_from_id}}">
+	<input type="hidden" name="user_id" value="{{user_id}}">
+	<input type="hidden" name="song_id" value="{{song_id}}">
+<input type="submit" value="Send">
+</form>
+{% end %}
+
+{% end %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block body %}
+			<h1>Add a song</h1>
+
+      {% if pastsong %}
+			   <h3>Current song</h3>
+         <img src="/current/image">
+         <p><span class="lead">{{title}}</span> by <span class="lead">{{artist}}</span></p>
+      {% end %}
+
+			<h3>Add</h3>
+			<form method="post" enctype="multipart/form-data">
+				Artist: <input type="text" name="artist"><br>
+        Title: <input type="text" name="title"><br>
+        Share to: <input type="text" name="who"><br>
+        Image: <input type="file" name="cover"><br>
+        File: <input type="file" name="song"><br>
+        <input type="submit">
+      </form>
+
+{% end %}
