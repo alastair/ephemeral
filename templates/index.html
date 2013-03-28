@@ -1,44 +1,59 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title></title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" type="text/css" href="{{static_url("bootstrap.css")}}">
-    <style>
-      body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-    </style>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+{% extends "base.html" %}
 
-</head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="#">Project name</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
+{% block body %}
+	{% if pastsong %}
+<img src="/current/image">
+<p style="margin-top:10px"><span class="lead">{{title}}</span> by <span class="lead">{{artist}}</span></p>
+
+{% if ours %}
+{% if doneplays < allowedplays %}
+<ul class="graphic">
+    <li><a href="/current/{{playcode}}.mp3" class="inline-playable">Play!</a></li>
+</ul>
+You can listen to the song! Only {{nummoreplays}} more plays though!
+{% else %}
+no more plays :(
+
+<p>Share it to one of these people who want to listen to it next, or someone who follows you
+
+<table> <tr>
+        <td valign="top">
+            <div style="text-align:left;">
+            {% for w in wantprofiles %}
+            <img src="{{w.profile_image_url}}"><a href="/share/{{w.screen_name}}">{{w.name}}</a><br>(@{{w.screen_name}})<br>
+            {%end%}
         </div>
-      </div>
-    </div>
+</td>
+<td valign="top">
+            <div style="text-align:left;">
+            {% for w in sugprofiles %}
+            <img src="{{w.profile_image_url}}"><a href="/share/{{w.screen_name}}">{{w.name}}</a><br>(@{{w.screen_name}})<br>
+            {%end%}
+        </div>
+</td></tr></table>
+<form method="get" action="/share">
+Or type in a twitter name here: <input type="text" name="to">
+</form>
+{% end %}
 
-    <div class="container">
+{% else %}
 
-      <h1>Bootstrap starter template</h1>
-      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
-      <a href="{{url}}"><img src="{{static_url("sign-in-with-twitter-gray.png")}}"></a>
+<p><a href="https://twitter.com/{{who}}">@{{who}}</a> is currently listening to this song.
+<a href="/want">Click here</a> to ask them to share it to you!<br>
+{% if numwants > 0 %}
+    {{numwants}} want to listen to it after @{{who}}.<br>
+{%end%}
+{% if oldwants > 0 %}
+    {{oldwants}} other people also want to listen to it.
+{%end%}
+</p>
 
-    </div> <!-- /container -->
-</body>
-</html>
+{% end %}
+
+{% end %}
+
+							{% if not logged_in %}
+      Log in to twitter to join <a href="{{url}}"><img src="{{static_url("sign-in-with-twitter-gray.png")}}"></a>
+	{%end%}
+
+{% end %}
